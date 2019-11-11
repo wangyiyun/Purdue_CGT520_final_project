@@ -134,11 +134,11 @@ void draw_surf(GLuint vao, bool drawLine)
 {
 	if (drawLine)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	else
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	glDrawArrays(GL_TRIANGLES, 0, N * N * 6);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

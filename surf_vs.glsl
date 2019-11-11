@@ -3,7 +3,7 @@ uniform mat4 PVM;
 
 layout (location = 0) in vec3 pos_attrib; //in object space
 layout (location = 1) in vec3 color_attrib;
-out vec3 vout_normal;
+out float vout_height;
 
 uniform float slider;
 
@@ -98,6 +98,6 @@ void main(void)
    //Compute clip-space vertex position
    gl_Position = PVM*vec4(pos_attrib + offset, 1.0);     //w = 1 becase this is a point
 
-   vout_normal = vec3(1,0,0);
+   vout_height = offset.z;
    gl_PointSize = 3.0f;
 }
