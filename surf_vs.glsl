@@ -4,54 +4,11 @@ uniform mat4 PVM;
 layout (location = 0) in vec3 pos_attrib; //in object space
 layout (location = 1) in vec3 color_attrib;
 out float vout_height;
+out vec3 vout_normal;
 
 uniform float slider;
 
 const float PI = 3.1415926;
-
-float rand3D(in vec3 co){
-	return fract(sin(dot(co.xyz ,vec3(12.9898,78.233,144.7272))) * 43758.5453);
-}
-
-vec3 getNormal(float n)
-{
-	float offset = 1.0f/20;
-	float h0, h1, h2;
-	vec3 normal, v1, v2;
-	h0 = rand3D(pos_attrib);
-	//	0/|\2
-	//	/1|3\
-	if(n == 0)
-	{
-		h1 = rand3D(pos_attrib + vec3(offset,0,0));
-		h2 = rand3D(pos_attrib + vec3(0,offset,0));
-		v1 = vec3(offset,0,h1-h0);
-		v2 = vec3(0,offset,h2-h0);
-	}
-	if(n == 0.25)
-	{
-		h1 = rand3D(pos_attrib + vec3(-offset,offset,0));
-		h2 = rand3D(pos_attrib + vec3(0,offset,0));
-		v1 = vec3(-offset,offset,h1-h0);
-		v2 = vec3(0,offset,h2-h0);
-	}
-	if(n == 0.5)
-	{
-		h1 = rand3D(pos_attrib + vec3(-offset,0,0));
-		h2 = rand3D(pos_attrib + vec3(0,offset,0));
-		v1 = vec3(-offset,0,h1-h0);
-		v2 = vec3(0,offset,h2-h0);
-	}
-	if(n == 1)
-	{
-		h1 = rand3D(pos_attrib + vec3(0,offset,0));
-		h2 = rand3D(pos_attrib + vec3(offset,offset,0));
-		v1 = vec3(0,offset,h1-h0);
-		v2 = vec3(offset,offset,h2-h0);
-	}
-	normal = normalize(cross(v1,v2));
-	return normal;
-}
 
 float rand(vec2 c){
 	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -91,13 +48,41 @@ float pNoise(vec2 p, int res){
 	return nf*nf*nf*nf;
 }
 
+float getHeight(vec2 uv)
+{
+	return 0.5*pNoise(10*uv,30);
+	//return 0.1*sin(10*uv.x)*cos(10*uv.y);
+}
+
+vec3 getNormal(float h0)
+{
+	float offset;
+	if(color_attrib.z != 0)
+	{
+		offset = 1.0f/100;
+	}
+	else offset = -1.0f/100;
+	
+	float h1, h2;
+	vec3 normal, v1, v2;
+
+	h1 = getHeight(color_attrib.xy+slider + vec2(offset,0));
+	h2 = getHeight(color_attrib.xy+slider + vec2(0,offset));
+	v1 = normalize(vec3(offset,h1-h0,0));
+	v2 = normalize(vec3(0,h2-h0,offset));
+	normal = normalize(cross(v2,v1));
+	return normal;
+}
 
 void main(void)
 {
-	vec3 offset = vec3(0,0, 0.5*pNoise(10*pos_attrib.xy+slider,30));
+	vec3 offset = vec3(0,0,getHeight(pos_attrib.xy + slider));
+	float centerHeight = getHeight(color_attrib.xy + slider);
+	vec3 n = getNormal(centerHeight);
    //Compute clip-space vertex position
-   gl_Position = PVM*vec4(pos_attrib + offset, 1.0);     //w = 1 becase this is a point
+   gl_Position = PVM*vec4(pos_attrib+offset, 1.0);     //w = 1 becase this is a point
 
    vout_height = offset.z;
+   vout_normal = n;
    gl_PointSize = 3.0f;
 }

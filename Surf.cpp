@@ -7,7 +7,7 @@
 using namespace std;
 using namespace glm;
 
-static int N = 50;
+static int N = 30;
 
 //The surface to draw.
 glm::vec3 surf(int i, int j)
@@ -54,40 +54,40 @@ GLuint create_surf_vbo()
 	   //surf_verts[i] = circle(i);
 	   for (int j = 0; j < N; j++)
 	   {
-		   if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
-		   {
+		   /*if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
+		   {*/
 			   // use point (i,j)
 			   surf_verts[count++] = surf(i, j);
-			   surf_verts[count++] = surf(i,j) + vec3(0.25,0.25,0);
+			   surf_verts[count++] = surf(i,j) + vec3(0.01,0.01,1);
 			   surf_verts[count++] = surf(i + 1, j);
-			   surf_verts[count++] = surf(i, j) + vec3(0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i, j) + vec3(0.01, 0.01, 1);
 			   surf_verts[count++] = surf(i, j + 1);
-			   surf_verts[count++] = surf(i, j) + vec3(0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i, j) + vec3(0.01, 0.01, 1);
 
 			   //
 			   surf_verts[count++] = surf(i, j + 1);
-			   surf_verts[count++] = surf(i+1, j + 1)- vec3(0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i+1, j + 1) + vec3(-0.01, -0.01, 0);
 			   surf_verts[count++] = surf(i + 1, j);
-			   surf_verts[count++] = surf(i + 1, j + 1) - vec3(0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i + 1, j + 1) + vec3(-0.01, -0.01, 0);
 			   surf_verts[count++] = surf(i + 1, j + 1);
-			   surf_verts[count++] = surf(i + 1, j + 1) - vec3(0.25, 0.25, 0);
-		   }
+			   surf_verts[count++] = surf(i + 1, j + 1) + vec3(-0.01, -0.01, 0);
+		   /*}
 		   else
 		   {
 			   surf_verts[count++] = surf(i, j);
-			   surf_verts[count++] = surf(i + 1, j)+ vec3(0.25, -0.25, 0);
+			   surf_verts[count++] = surf(i + 1, j)+ vec3(0.1, -0.1, 0);
 			   surf_verts[count++] = surf(i + 1, j);
-			   surf_verts[count++] = surf(i + 1, j) + vec3(0.25, -0.25, 0);
+			   surf_verts[count++] = surf(i + 1, j) + vec3(0.1, -0.1, 0);
 			   surf_verts[count++] = surf(i + 1, j + 1);
-			   surf_verts[count++] = surf(i + 1, j) + vec3(0.25, -0.25, 0);
+			   surf_verts[count++] = surf(i + 1, j) + vec3(0.1, -0.1, 0);
 
 			   surf_verts[count++] = surf(i, j);
-			   surf_verts[count++] = surf(i+1, j) + vec3(-0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i+1, j) + vec3(-0.1, 0.1, 0);
 			   surf_verts[count++] = surf(i + 1, j + 1);
-			   surf_verts[count++] = surf(i + 1, j) + vec3(-0.25, 0.25, 0);
+			   surf_verts[count++] = surf(i + 1, j) + vec3(-0.1, 0.1, 0);
 			   surf_verts[count++] = surf(i, j + 1);
-			   surf_verts[count++] = surf(i + 1, j) + vec3(-0.25, 0.25, 0);
-		   }
+			   surf_verts[count++] = surf(i + 1, j) + vec3(-0.1, 0.1, 0);
+		   }*/
 	   }
    }
 
