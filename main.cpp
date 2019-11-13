@@ -52,7 +52,7 @@ GLuint cube_vao = -1;
 //camera and viewport
 float camangle = 0.0f;
 glm::vec3 campos(0.0f, 1.0f, 2.0f);
-float aspect = 1.0f;
+float aspect = 0.0f;
 
 // my var
 bool m_drawLine =  false;
@@ -70,7 +70,7 @@ void draw_gui()
    ImGui::SliderFloat3("Cam Pos", &campos[0], -20.0f, +20.0f);
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
    ImGui::Checkbox("Draw Line", &m_drawLine);
-   ImGui::SliderFloat("slider", &slider, 1.0f, +2.0f);
+   ImGui::SliderFloat("slider", &slider, -10.0f, +10.0f);
    ImGui::End();
 
    ImGui::Render();
@@ -162,7 +162,7 @@ void draw_surf(const glm::mat4& P, const glm::mat4& V)
    int slider_loc = glGetUniformLocation(surf_shader_program, "slider");
    if (slider_loc != -1)
    {
-	   glUniform1f(slider,slider);
+	   glUniform1f(slider_loc,slider);
    }
    glBindVertexArray(surf_vao);
    draw_surf(surf_vao, m_drawLine);
@@ -203,6 +203,12 @@ void idle()
    {
       //double check that you are using glUniform1f
       glUniform1f(time_loc, time_sec);
+   }
+   glUseProgram(surf_shader_program);
+   int time_loc_surf = glGetUniformLocation(surf_shader_program, "time");
+   if (time_loc_surf != -1)
+   {
+	   glUniform1f(time_loc_surf, time_sec);
    }
 }
 

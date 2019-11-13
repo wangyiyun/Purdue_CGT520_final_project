@@ -7,6 +7,7 @@ out float vout_height;
 out vec3 vout_normal;
 
 uniform float slider;
+uniform float time;
 
 const float PI = 3.1415926;
 
@@ -54,7 +55,13 @@ float getHeight(vec2 uv)
 	//return 0.1*sin(10*uv.x)*cos(10*uv.y);
 }
 
-vec3 getNormal(float h0)
+float getWaterHeight(vec2 pos)
+{
+	return 0.002*(sin(10*pos.x + time)*
+		cos(10*pos.x + 15*pos.y + time*1.5));
+}
+
+vec3 getNormal(float h0, bool isWater)
 {
 	float offset;
 	if(color_attrib.z != 0)
@@ -64,10 +71,21 @@ vec3 getNormal(float h0)
 	else offset = -1.0f/100;
 	
 	float h1, h2;
+	vec2 p1,p2;
 	vec3 normal, v1, v2;
 
-	h1 = getHeight(color_attrib.xy+slider + vec2(offset,0));
-	h2 = getHeight(color_attrib.xy+slider + vec2(0,offset));
+	p1 = color_attrib.xy+slider + vec2(offset,0);
+	p2 = color_attrib.xy+slider + vec2(0,offset);
+
+	h1 = getHeight(p1);
+	h2 = getHeight(p2);
+
+	if(isWater)
+	{
+		h1 += getWaterHeight(p1);
+		h2 += getWaterHeight(p2);
+	}
+	
 	v1 = normalize(vec3(offset,h1-h0,0));
 	v2 = normalize(vec3(0,h2-h0,offset));
 	normal = normalize(cross(v2,v1));
@@ -78,11 +96,17 @@ void main(void)
 {
 	vec3 offset = vec3(0,0,getHeight(pos_attrib.xy + slider));
 	float centerHeight = getHeight(color_attrib.xy + slider);
-	vec3 n = getNormal(centerHeight);
-   //Compute clip-space vertex position
-   gl_Position = PVM*vec4(pos_attrib+offset, 1.0);     //w = 1 becase this is a point
-
-   vout_height = offset.z;
-   vout_normal = n;
-   gl_PointSize = 3.0f;
+	bool isWater = false;
+	//Compute clip-space vertex position
+	if((pos_attrib+offset).z < 0.03f)
+	{
+		offset = vec3(0,0,getWaterHeight(pos_attrib.xy));
+		isWater = true;
+	}
+	vec3 n = getNormal(centerHeight, isWater);
+	gl_Position = PVM*vec4(pos_attrib+offset, 1.0);     //w = 1 becase this is a point
+	
+	vout_height = offset.z;
+	vout_normal = n;
+	gl_PointSize = 3.0f;
 }
