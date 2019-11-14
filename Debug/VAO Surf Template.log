@@ -1,8 +1,0 @@
-﻿  Surf.cpp
-  main.cpp
-  正在生成代码...
-C:\Users\yiyun\OneDrive\文档\MyProj\CGT520\final proj\main.cpp(165,17): warning C4244:  “参数”: 从“float”转换到“GLint”，可能丢失数据
-C:\Users\yiyun\OneDrive\文档\MyProj\CGT520\final proj\main.cpp(165,17): warning C4244: GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
-C:\Users\yiyun\OneDrive\文档\MyProj\CGT520\final proj\main.cpp(165,17): warning C4244: GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
-C:\Users\yiyun\OneDrive\文档\MyProj\CGT520\final proj\Surf.cpp(45): warning C4715:  “setColor”: 不是所有的控件路径都返回值
-  VAO Surf Template.vcxproj -> C:\Users\yiyun\OneDrive\文档\MyProj\CGT520\final proj\Debug\VAO Surf Template.exe
