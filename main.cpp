@@ -51,12 +51,12 @@ GLuint cube_vao = -1;
 
 //camera and viewport
 float camangle = 0.0f;
-glm::vec3 campos(0.0f, 1.0f, 2.0f);
-float aspect = 0.0f;
+glm::vec3 campos(0.0f, 0.8f, 4.0f);
+float aspect = 1.0f;
 
 // my var
-bool m_drawLine =  false;
-float slider = 1;
+bool m_drawSurf =  true;
+float slider = 0;
 
 void draw_gui()
 {
@@ -69,7 +69,7 @@ void draw_gui()
    ImGui::Checkbox("Draw mesh", &mesh_enabled); ImGui::SameLine();
    ImGui::SliderFloat3("Cam Pos", &campos[0], -20.0f, +20.0f);
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
-   ImGui::Checkbox("Draw Line", &m_drawLine);
+   ImGui::Checkbox("Draw Surface", &m_drawSurf);
    ImGui::SliderFloat("slider", &slider, -10.0f, +10.0f);
    ImGui::End();
 
@@ -165,7 +165,7 @@ void draw_surf(const glm::mat4& P, const glm::mat4& V)
 	   glUniform1f(slider_loc,slider);
    }
    glBindVertexArray(surf_vao);
-   draw_surf(surf_vao, m_drawLine);
+   draw_surf(surf_vao, m_drawSurf);
 }
 
 // glut display callback function.
@@ -209,6 +209,12 @@ void idle()
    if (time_loc_surf != -1)
    {
 	   glUniform1f(time_loc_surf, time_sec);
+   }
+   glUseProgram(cube_shader_program);
+   int time_loc_cube = glGetUniformLocation(cube_shader_program, "time");
+   if (time_loc_cube != -1)
+   {
+	   glUniform1f(time_loc_cube, time_sec);
    }
 }
 
