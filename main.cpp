@@ -19,6 +19,12 @@
 #include "Cube.h"
 #include "Surf.h"
 
+#include <stdio.h>
+#include "include/irrKlang/irrKlang.h"
+
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+
 
 //Texture files and IDs
 static const std::string texture_name = "BenizaT.bmp";
@@ -59,6 +65,18 @@ bool m_drawSurf =  true;
 float slider = 0;
 float mountHight = 1;
 
+void init_sound()
+{
+	ISoundEngine* engine = createIrrKlangDevice();
+
+	if (!engine)
+	{
+		printf("Could not startup engine\n");
+		return;
+	}
+	engine->play2D("media/the_night_sky.ogg", true);
+}
+
 void draw_gui()
 {
    glUseProgram(mesh_shader_program);
@@ -67,7 +85,7 @@ void draw_gui()
 
    ImGui::Begin("My GUI", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-   ImGui::Checkbox("Draw mesh", &mesh_enabled); ImGui::SameLine();
+   //ImGui::Checkbox("Draw mesh", &mesh_enabled); ImGui::SameLine();
    ImGui::SliderFloat3("Cam Pos", &campos[0], -20.0f, +20.0f);
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
    ImGui::Checkbox("Draw Surface", &m_drawSurf);
@@ -327,6 +345,7 @@ int main(int argc, char **argv)
    glutReshapeFunc(reshape);
 
    initOpenGl();
+   init_sound();
 
    //Enter the glut event loop.
    glutMainLoop();
