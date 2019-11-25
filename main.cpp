@@ -57,6 +57,7 @@ float aspect = 1.0f;
 // my var
 bool m_drawSurf =  true;
 float slider = 0;
+float mountHight = 1;
 
 void draw_gui()
 {
@@ -71,6 +72,7 @@ void draw_gui()
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
    ImGui::Checkbox("Draw Surface", &m_drawSurf);
    ImGui::SliderFloat("slider", &slider, -10.0f, +10.0f);
+   ImGui::SliderFloat("height", &mountHight, 0.0f, +2.0f);
    ImGui::End();
 
    ImGui::Render();
@@ -165,6 +167,14 @@ void draw_surf(const glm::mat4& P, const glm::mat4& V)
 	   glUniform1f(slider_loc,slider);
    }
    glBindVertexArray(surf_vao);
+
+   int mountHeight_loc = glGetUniformLocation(surf_shader_program, "mountHeight");
+   if (mountHeight_loc != -1)
+   {
+	   glUniform1f(mountHeight_loc, mountHight);
+   }
+   glBindVertexArray(surf_vao);
+
    draw_surf(surf_vao, m_drawSurf);
 }
 

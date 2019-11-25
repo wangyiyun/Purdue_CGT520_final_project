@@ -8,6 +8,7 @@ out vec3 vout_normal;
 
 uniform float slider;
 uniform float time;
+uniform float mountHeight;
 
 const float PI = 3.1415926;
 
@@ -51,7 +52,7 @@ float pNoise(vec2 p, int res){
 
 float getHeight(vec2 uv)
 {
-	return 0.5*pNoise(10*uv,30);
+	return 0.5*pNoise(10*uv,30) * mountHeight;
 	//return 0.1*sin(10*uv.x)*cos(10*uv.y);
 }
 
