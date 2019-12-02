@@ -1,2 +1,2 @@
-# Purdue-CGT520-Final-Project
-A low poly dynamic terrain generator.
+# Purdue_2019_CGT520_Final_Project
+ A terrain generator in OpenGL

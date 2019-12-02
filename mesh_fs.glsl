@@ -9,7 +9,6 @@ uniform float alpha = 20.0; //phong specular exponent (shininess)
 
 const vec3 l = vec3(0.0, 1.0, 0.0); //world space (directional light)
 
-uniform sampler2D texture;
 uniform samplerCube cubemap;
 uniform float slider;
 uniform float time;
@@ -27,14 +26,14 @@ void main(void)
    vec3 v = normalize(eye-p); // unit view vector
    vec3 r = reflect(-l, n); // unit reflection vector
 
-   vec4 tex_color = texture2D(texture, tex_coord);
+   if(n.y < 0) n.y *= -1;
 
-   //compute phong lighting in world space
-   vec4 amb = tex_color*La;
-   vec4 diff = tex_color*Ld*max(dot(n,l), 0.0);
-   vec4 spec = ks*Ls*pow(max(dot(r,v), 0.0), alpha);
+   vec3 light_dir = normalize(vec3(sin(time*0.5),cos(time*0.5),0));
+	vec3 light_color = vec3(1,1,1);
 
-   fragcolor =  amb + diff + spec;
+   vec3 result = vec3(1) + vec3(0.5)*light_color*dot(n,light_dir);
+
+   fragcolor =  vec4(result,0.75);
 
 }
 

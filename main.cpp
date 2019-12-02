@@ -27,9 +27,6 @@ using namespace irrklang;
 
 
 //Texture files and IDs
-static const std::string texture_name = "BenizaT.bmp";
-GLuint texture_id = -1; //Texture map for fish
-
 static const std::string cube_name = "cubemap";
 GLuint cubemap_id = -1; //Texture id for cubemap
 
@@ -37,10 +34,10 @@ GLuint cubemap_id = -1; //Texture id for cubemap
 static const std::string vertex_shader("mesh_vs.glsl");
 static const std::string fragment_shader("mesh_fs.glsl");
 GLuint mesh_shader_program = -1;
-static const std::string mesh_name = "Benizake0.obj";
+static const std::string mesh_name = "cloud.obj";
 MeshData mesh_data;
 
-bool mesh_enabled = false;
+bool mesh_enabled = true;
 
 //Surf files and IDs
 static const std::string surf_vs("surf_vs.glsl");
@@ -74,7 +71,22 @@ void init_sound()
 		printf("Could not startup engine\n");
 		return;
 	}
+	engine->setSoundVolume(0.2f);
 	engine->play2D("media/the_night_sky.ogg", true);
+}
+
+const int CloudNum = 3;
+glm::vec4 MyCloud[CloudNum];
+void init_cloud()
+{
+	srand(glutGet(GLUT_ELAPSED_TIME));
+	for (int i = 0; i < CloudNum; i++)
+	{
+		MyCloud[i].x = (rand() % 10 / 10.0f) * 2 - 1;
+		MyCloud[i].y = i-1;
+		MyCloud[i].z = (rand() % 10 / 10.0f)*0.5 + 1.5;
+		MyCloud[i].w = (rand() % 10 / 10.0f)*0.5 + 1.5;
+	}
 }
 
 void draw_gui()
@@ -85,31 +97,36 @@ void draw_gui()
 
    ImGui::Begin("My GUI", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-   //ImGui::Checkbox("Draw mesh", &mesh_enabled); ImGui::SameLine();
+ /*  ImGui::Checkbox("Draw mesh", &mesh_enabled);*/
    ImGui::SliderFloat3("Cam Pos", &campos[0], -20.0f, +20.0f);
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
-   ImGui::Checkbox("Draw Surface", &m_drawSurf);
+   //ImGui::Checkbox("Draw Surface", &m_drawSurf);
    ImGui::SliderFloat("slider", &slider, -10.0f, +10.0f);
    ImGui::SliderFloat("height", &mountHight, 0.0f, +2.0f);
+
+   if (ImGui::Button("Reset Camera", ImVec2(120,20)))
+   {
+	   camangle = 0.0f;
+	   campos = glm::vec3(0.0f, 0.8f, 4.0f);
+   }
+   if (ImGui::Button("New Cloud", ImVec2(120, 20)))
+   {
+	   init_cloud();
+   }
+
    ImGui::End();
 
    ImGui::Render();
    first_frame = false;
 }
 
-void draw_fish(const glm::mat4& P, const glm::mat4& V)
+void draw_cloud(const glm::mat4& P, const glm::mat4& V, int i)
 {
-   glm::mat4 R = glm::rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-   glm::mat4 M = R*glm::scale(glm::vec3(2.0f*mesh_data.mScaleFactor));
+	
+   glm::mat4 R = glm::rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::vec3(MyCloud[i].x, MyCloud[i].y, 2));
+   glm::mat4 M = R*glm::scale(glm::vec3(glm::vec3(MyCloud[i].z,MyCloud[i].w,2)*mesh_data.mScaleFactor));
    
    glUseProgram(mesh_shader_program);
-   glActiveTexture(GL_TEXTURE0);
-   glBindTexture(GL_TEXTURE_2D, texture_id);
-   int tex_loc = glGetUniformLocation(mesh_shader_program, "texture");
-   if (tex_loc != -1)
-   {
-      glUniform1i(tex_loc, 0); // we bound our texture to texture unit 0
-   }
 
    glActiveTexture(GL_TEXTURE1);
    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap_id);
@@ -154,7 +171,7 @@ void draw_cube(const glm::mat4& P, const glm::mat4& V)
       glUniformMatrix4fv(PVM_loc, 1, false, glm::value_ptr(PVM));
    }
    
-   glActiveTexture(GL_TEXTURE1);
+   glActiveTexture(GL_TEXTURE1);  
    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap_id);
    int cube_loc = glGetUniformLocation(cube_shader_program, "cubemap");
    if (cube_loc != -1)
@@ -207,12 +224,15 @@ void display()
 
    draw_cube(P, V);
 
+   draw_surf(P, V);
+
    if(mesh_enabled)
    {
-      draw_fish(P, V);
+	   for (int i = 0; i < CloudNum; i++)
+	   {
+		   draw_cloud(P, V,i);
+	   }
    }
-
-   draw_surf(P, V);
 
    draw_gui();
    glutSwapBuffers();
@@ -259,6 +279,10 @@ void initOpenGl()
    glewInit();
 
    glEnable(GL_DEPTH_TEST);
+
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
    glEnable(GL_POINT_SPRITE);       // allows textured points
    glEnable(GL_PROGRAM_POINT_SIZE); //allows us to set point size in vertex shader
    glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
@@ -268,7 +292,6 @@ void initOpenGl()
    mesh_shader_program = InitShader(vertex_shader.c_str(), fragment_shader.c_str());
    //mesh and texture to be rendered
    mesh_data = LoadMesh(mesh_name);
-   texture_id = LoadTexture(texture_name);
 
    cube_shader_program = InitShader(cube_vs.c_str(), cube_fs.c_str());
    cube_vao = create_cube_vao();
@@ -346,6 +369,7 @@ int main(int argc, char **argv)
 
    initOpenGl();
    init_sound();
+   init_cloud();
 
    //Enter the glut event loop.
    glutMainLoop();

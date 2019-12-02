@@ -8,7 +8,7 @@ uniform float time;
 
 void main(void)
 {   
-	vec3 light_dir = normalize(vec3(sin(time*0.8),cos(time*0.8),0));
+	vec3 light_dir = normalize(vec3(sin(time*0.5),cos(time*0.5),0));
 	vec3 light_color = vec3(1,0.6,0);
 	float height = vout_height;
 	vec3 result = vec3(1,0,1);

@@ -5,48 +5,111 @@
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="LoadMesh.cpp" />
     <ClCompile Include="LoadTexture.cpp" />
-    <ClCompile Include="include\imgui\imgui.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_demo.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_draw.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_impl_glut.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Surf.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_demo.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_glut.cpp">
+      <Filter>source\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h" />
     <ClInclude Include="InitShader.h" />
     <ClInclude Include="LoadMesh.h" />
     <ClInclude Include="LoadTexture.h" />
+    <ClInclude Include="Surf.h" />
     <ClInclude Include="include\imgui\imconfig.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imgui.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imgui_impl_glut.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imgui_internal.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\stb_rect_pack.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\stb_textedit.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\stb_truetype.h">
-      <Filter>imgui</Filter>
+      <Filter>source\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Surf.h" />
+    <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_EStreamModes.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IAudioRecorder.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IAudioStream.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IAudioStreamLoader.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IFileFactory.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IFileReader.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IRefCounted.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_irrKlangTypes.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISound.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundDeviceList.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundEffectControl.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundEngine.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundMixedOutputReceiver.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundSource.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_ISoundStopEventReceiver.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_IVirtualRefCounted.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\ik_vec3d.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
+    <ClInclude Include="include\irrKlang\irrKlang.h">
+      <Filter>source\irrKlang</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cube_fs.glsl">
@@ -72,8 +135,14 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{c82350ba-1d9b-470c-ad83-fb84f7fe6fe9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="imgui">
+    <Filter Include="source">
       <UniqueIdentifier>{a66b332e-f79b-4064-9096-a4bb283dc9fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\imgui">
+      <UniqueIdentifier>{b4913cb9-aedd-42fa-b96e-cfaff933f41a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\irrKlang">
+      <UniqueIdentifier>{3f2e4049-f953-4a29-a25c-63a2756f1e62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
