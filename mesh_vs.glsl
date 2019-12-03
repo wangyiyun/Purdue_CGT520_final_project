@@ -19,8 +19,9 @@ const vec4 origin = vec4(0.0, 0.0, 0.0, 1.0); //w = 1 becase this is a point
 
 void main(void)
 {
+	vec3 anim = vec3(0.3*sin(pos_attrib + time))+vec3(time*0.5,0,0);
    //Compute clip-space vertex position
-   gl_Position = PVM*vec4(pos_attrib, 1.0);     //w = 1 becase this is a point
+   gl_Position = PVM*vec4(pos_attrib + anim, 1.0);     //w = 1 becase this is a point
 
    tex_coord = tex_coord_attrib;
 

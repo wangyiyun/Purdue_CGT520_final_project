@@ -7,20 +7,20 @@
 using namespace std;
 using namespace glm;
 
-static int N = 30;
+static int N = 300;
 
 //The surface to draw.
 glm::vec3 surf(int i, int j)
 {
-   const float offset = 0.5f;
-   const float step = 1.0f / N;
-   const float z_scale = 10.0f;
+	const float scale = 10.0f;
+	const float offset = scale/2;
+	const float step = scale / N;
+	
+	float x = -offset + step * i;
+	float y = offset - step * j;
 
-   float x = -offset + step * i;
-   float y = offset - step * j;
-
-   float z = 0.0f;
-   return glm::vec3(x, y, 0);
+	float z = 0.0f;
+	return glm::vec3(x, y, 0);
 }
 
 vec3 setColor(int n)

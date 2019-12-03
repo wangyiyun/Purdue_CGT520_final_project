@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <iostream>
-
+using namespace std;
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
@@ -61,6 +61,7 @@ float aspect = 1.0f;
 bool m_drawSurf =  true;
 float slider = 0;
 float mountHight = 1;
+float terrianHeight = 0;
 
 void init_sound()
 {
@@ -75,17 +76,28 @@ void init_sound()
 	engine->play2D("media/the_night_sky.ogg", true);
 }
 
-const int CloudNum = 3;
-glm::vec4 MyCloud[CloudNum];
+const int CloudNum = 10;
+struct Cloud
+{
+	glm::vec3 pos;
+	glm::vec3 scale;
+
+}clouds[CloudNum];
+
 void init_cloud()
 {
 	srand(glutGet(GLUT_ELAPSED_TIME));
+	const int scale = 50;
+	
 	for (int i = 0; i < CloudNum; i++)
 	{
-		MyCloud[i].x = (rand() % 10 / 10.0f) * 2 - 1;
-		MyCloud[i].y = i-1;
-		MyCloud[i].z = (rand() % 10 / 10.0f)*0.5 + 1.5;
-		MyCloud[i].w = (rand() % 10 / 10.0f)*0.5 + 1.5;
+		clouds[i].pos.x = rand()%scale - scale/2;
+		clouds[i].pos.y = rand()%scale - scale/2;
+		clouds[i].pos.z = 5;
+		clouds[i].scale.x = rand() % 10 + 5;
+		clouds[i].scale.y = rand() % 10 + 5;
+		clouds[i].scale.z = 7.5;
+		
 	}
 }
 
@@ -101,8 +113,9 @@ void draw_gui()
    ImGui::SliderFloat3("Cam Pos", &campos[0], -20.0f, +20.0f);
    ImGui::SliderFloat("Cam Angle", &camangle, -180.0f, +180.0f);
    //ImGui::Checkbox("Draw Surface", &m_drawSurf);
-   ImGui::SliderFloat("slider", &slider, -10.0f, +10.0f);
-   ImGui::SliderFloat("height", &mountHight, 0.0f, +2.0f);
+   ImGui::SliderFloat("Noise slider", &slider, -10.0f, +10.0f);
+   ImGui::SliderFloat("Mount height", &mountHight, 0.0f, +2.0f);
+   ImGui::SliderFloat("Terrian height", &terrianHeight, -0.05f, +0.05f);
 
    if (ImGui::Button("Reset Camera", ImVec2(120,20)))
    {
@@ -123,8 +136,8 @@ void draw_gui()
 void draw_cloud(const glm::mat4& P, const glm::mat4& V, int i)
 {
 	
-   glm::mat4 R = glm::rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::vec3(MyCloud[i].x, MyCloud[i].y, 2));
-   glm::mat4 M = R*glm::scale(glm::vec3(glm::vec3(MyCloud[i].z,MyCloud[i].w,2)*mesh_data.mScaleFactor));
+   glm::mat4 R = glm::rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::vec3(clouds[i].pos));
+   glm::mat4 M = R*glm::scale(glm::vec3(glm::vec3(clouds[i].scale)*mesh_data.mScaleFactor));
    
    glUseProgram(mesh_shader_program);
 
@@ -207,6 +220,11 @@ void draw_surf(const glm::mat4& P, const glm::mat4& V)
    if (mountHeight_loc != -1)
    {
 	   glUniform1f(mountHeight_loc, mountHight);
+   }
+   int terrianHeight_loc = glGetUniformLocation(surf_shader_program, "terrianHeight");
+   if (terrianHeight_loc != -1)
+   {
+	   glUniform1f(terrianHeight_loc, terrianHeight);
    }
    glBindVertexArray(surf_vao);
 
